@@ -1,0 +1,85 @@
+control Flow
+|
+|____> if else statment
+      |
+      |___> if(condition){
+                statment
+            }
+            else if(another_condition){
+                statment
+            }
+            else{ // otherwise
+                statment
+            }
+|            
+|____> switch case
+       |
+       |___> switch(variable){
+             
+             case 'vlaue1':
+                console.log('vlaue1');
+                break;
+                
+             case 'value2':
+                console.log('value2');
+                break;
+                
+             defualt:
+                console.log('default value');
+             }
+|
+|____> Loops
+       |
+       |___> for
+            |
+            |__> for(let i = 0; i < 10 ; i++){
+                    console.log(i);
+                 }
+       |
+       |___> while
+            |
+            |__> let i = 10;
+                 while( i >= 0){
+                    console.log(i);
+                    i--;
+                 }
+       |
+       |___> do...while
+            |
+            |__>   -always executed at least ones.
+                   let i = 10;
+                   do{
+                       console.log(i);
+                       i--;
+                       
+                   }while(i >= 0);
+       |
+       |___> for...in
+            |
+            |__> let colors = ['red', 'green', 'blue', 'yellow'];
+                 for(let index in colors){
+                    console.log(index, colors[index]);
+                 }
+       |
+       |___> for...of
+            |
+            |__> let colors = ['red', 'green', 'blue', 'yellow'];
+                 for(let color in colors){
+                    console.log(color);
+                 }
+|
+|___> Break and Continue
+     |
+     |__> let i = 0;
+          while(i <= 10){
+          
+          if (i === 5) break;
+          
+          if(i%2 == 0){
+            i++;
+            continue;
+          }
+          
+          console.log(i);
+          i++;
+          }
