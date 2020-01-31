@@ -1,0 +1,77 @@
+Operator
+|
+|____> Arthimatic
+       |
+       |_____> operation (+, -. *, /, %)
+       |
+       |_____> Increament (++)
+       |
+       |_____> Decreament (--)
+|
+|_____> Assignment
+       |
+       |_____> (x = x + 1) eq (x++) eq (x += 1)
+       |
+       |_____> (x = x - 5) eq (---) eq (x += 5)
+       
+|
+|_____> Comparison
+       |
+       |_____> Relational (>, >=, <, <=)
+       |
+       |_____> Equality
+              |
+              |____> Strict Equality (Type + Value) (===, !==)
+              |
+              |____> Lose Equality (==, !=) convert RS's type to match LS
+|
+|_____> Ternary/conditional (point > 100 ? 'gold' : 'silver') 
+|
+|_____> Logical (and --> &&, or --> ||, not --> !)
+|
+|_____> BitWise
+       |
+       |____> OR (|) BinarySys(1) = 00000001 | BinarySys(2) = 00000010 = 3
+       |
+       |____> AND (&) (1 & 2) = 0
+
+-------------------------------------------------------------------------  
+Bitwise example: give user permission (read, write, execute)
+__> read, write, execute
+__> 00000100 4
+__> 00000010 2
+__> 00000001 1
+
+const readPermision = 4;
+const writePermision = 2;
+const executePermision = 1;
+
+let userPermision = 0;
+___> to give user permision use OR (|).
+___> to check user permision use AND (&).
+
+userPermision = userPermision | readPermision | executePermision;
+consol.log(userPermision & readPermision ? 'yes' : 'no'); --> yes;
+------------------------------------------------------------------------
+    
+Falsy value (false)
+|
+|____> false
+|
+|____> undefined
+|
+|____> null
+|
+|____> 0
+|
+|____> ''
+|
+|____> NaN
+|
+|____> anything thing is not Falsy -> Truthy
+
+Short-circuiting
+|
+|____> concepte that or work with (false || 1 || 2) --> 1
+       
+       
