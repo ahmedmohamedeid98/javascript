@@ -1,0 +1,238 @@
+Arrays
+|
+|___> create array : const arr = [1,2,3];
+      |
+      |___> note: 'const' prevent us from re-assignment the variable but
+      |     we can modify it's content like (add, remove, ...).
+      |
+      |___> earlier we know that array is 'object', 
+            use dot notation to see all the properities and methods defined in arrays.
+|
+|___> Adding new element(s).
+      |
+      |___> at the Begining: unshift(items_you_need_to_add)
+      |     arr.unshift(4,5); //output: [4,5,1,2,3]
+      |
+      |___> at the Middel: splice(start_position, count_numbers_you_need_to_delete, items_you_need_to_add)
+      |     arr.splice(2, 0, 'f', 'b'); //output: [4,5,'f','r',1,2,3]
+      |
+      |___> at the End: push(items)
+      |     arr.push(10); //output: [4,5,'f','r',1,2,3,10]
+      |___________________________
+|
+|___> Finding element
+      |
+      |___> Primitive  const arr = [1,2,3,1,4];
+      |     |
+      |     |___> arr.indexOf(items, (optional) fromIndex) -> return index if element found, -1 else.
+      |     |     arr.indexOf(1);     //output: 0
+      |     |     arr.indexOf('a');   //output: -1
+      |     |     arr.indexOf(1, 1);  //outout: -1 when search start from index 1.
+      |     |
+      |     |___> arr.lastIndexOf(1) //output: 3
+      |     |
+      |     |___> check existing: arr.include(1) //output: true
+      |     
+      |
+      |___> Reference  const courses = [ {id: 0, name: 'a'}, {id: 1, name: 'b'} ];
+      |
+      |
+      |___> find [return object if its founded, undefined else], findIndex [return object's index if it's founded, -1 else].
+      |     find( [ /predicate_function(callback_function) ] ) 
+      |     const course = courses.find( function(course){
+      |                                         return course.name === 'a';
+      |                                  }); //output: {id: 0, name: 'a'}
+      |     const course = courses.findIndex( function(course){ return course.name === 'a'}); //output: 0
+      |
+      |___> callBack function can write like   .find(function(course) {return course.name === 'a'});
+      |
+      |                                   |__> .find((course) =>  {return course.name === 'a'}); ==> called arrow func, drop 'function' keyword
+      |                                   |__> .find( course => {return course.name === 'a'}); ==> func with one argument, can drop the paranthese
+      |                                   |__> .find( course => course.name === 'a'); ==> body single line, can drop callbraces & 'return' keyword
+      |__________________________________________________
+
+|
+|
+|____> Removing element // remove the number and return it
+      |
+      |___> from begining : arr.shift()
+      |
+      |___> from Midel : arr.splice(start_index, count_num_to_remove) // return an array
+      |
+      |___> from end: arr.pop()     
+|
+|
+|____> Emptying Array
+       |
+       |___> let number = [1,2,3,4];
+       |     let another = number;
+       |
+       |___> solution #1
+       |     number = []; 
+       |     //output: number = [], anoter = [1,2,3,4]
+       |     //not preferable in multiple reference to the same object
+       |
+       |___> solution #2
+       |     number.length = 0; 
+       |     //output: number = [], another = []
+       |     //good solution
+       |
+       |___> solution #3
+       |     number.splice(0, number.length);
+       |     //output: number = [], another = []
+       |
+       |___> solution #4
+       |     while(number.length > 0)
+       |           number.pop();
+       |     //this solution not preferable in the large arrays     
+       |________________________________________________
+|
+|
+|____> Combining and Slicing Array
+       |
+       |___> let first = [1,2,3,4];
+       |     let second = [5,6,7];
+       |
+       |___> let combine = first.concat(second);
+       |
+       |___> let another = first.slice(from, to)
+       |     let another1 = first.slice(0,2); // output: [3,4]
+       |     let another2 = first.slice(); // output: return a copy of the original operator.
+       |__________________________________________________
+|
+|
+|____>  Spread Operator
+       |
+       |
+       |___> another way to concate two arrays: `...array` this return the array's element individally.
+       |
+       |___> const combine = [...first, ...second]; //the best in this way that we can modifiy the new array like
+       |
+       |___> const combine = [...first, 'v', ...second, 't']; 
+       |
+       |___> const another = [...first]; // also used to copy array.
+|
+|
+|___> iterating over array
+      |
+      |___> let numbers = [1,2,3,4];
+      |
+      |___> first way : for - of
+      |     for(let num of numbers){
+      |         console.log(num);
+      |     }
+      |
+      |___> second way: forEach
+      |     numbers.forEach( num => console.log(num) );
+      |     numbers.forEach( (num, index) => console.log(index, num) );
+      |
+      |___> third way: for - in
+      |     for(let index in numbers){ console.log(numbers[index])};
+      |____________________________________________________
+
+|
+|
+|___> join arrays
+      |
+      |___> let arr = ['this', 'is', 'my', 'first', 'message'];
+      |
+      |___> let message = arr.join(' '); //output: 'this is my first message'.
+|
+|
+|___> Sort Array
+      |
+      |___> let arr = [4,1,3,2];
+      |
+      |___> arr.sort(); //output: [1,2,3,4] --- arr.reverse(); //output: [4,3,2,1]   
+      |
+      |___> let courses = [ {id: 0, name: 'Node.js'}, {id: 1, name: 'javaScript'} ];
+      |
+      |___> courses.sort( function(a,b){
+      |     // treatment the case-sensitive problem
+      |     let nameA = a.name.toUpperCase();
+      |     let nameB = b.name.toUpperCase(); // or lower case, but the two must be the same
+      |     
+      |     if( nameA > nameB) return 1;
+      |     if( nameA < nameB) return -1;
+      |     return 0;
+      |________________________________________________
+|
+|
+|___> Testing the Elements in the Array
+      |
+      |___> let number = [1,2,3,4,5];
+      |
+      |___> every(callback(value, index, array)): check if all the elements in the array are match the crateria.
+      |              like check if all elements in the array are positive??
+      |
+      |___> numbers.every(function(value){
+      |     return vlaue >= 0;
+      |     }); //output: true
+      |
+      |___> some(callback(...)): check if at least one parameter match the crateria.
+      |
+      |___> numbers.some(function(value){
+      |     return value <= 0;
+      |     }); //output: false
+      |__________________________________________________
+|
+|
+|____> Filtering Array
+       |
+       |___> const numbers = [1, -1, 2, 3];
+       |
+       |___> const new_arr = numbers.filter(value => value >= 0); //output: [1,2,3]
+|
+|
+|____> map(callbackfn(...)) : map functionmap each element in the array to something else.
+      |
+      |___> let numbers = [1,-1,2,3]; //filter this array to new positive arr then map each element into obj {value: num}.
+      |
+      |___> let items = numbers
+      |     .filter(v => v >= 0) 
+      |     .map(v => ({value: v}) ); //output: [{value: 1},{value: 2},{value: 3}]
+      |_________________________________________
+|
+|
+|____> Reducing an array
+       |
+       |___> let numbers = [1,2,3,4]; // calculate the sum
+       |
+       |___> reduce(callbackfn( accumelator, currentValue), init_accumelator); 
+       |     if not init_accumelator ==> acc = first_element, currentValue = second_element.
+       |     the job of the reduce func is: reduce array to one item whatever Number, Strinf, ...
+       |
+       |___> const sum = numbers.reduce(
+       |        (accumelator, currentValue) => accumelator + currentValue
+       |     );
+       |     output: 10
+       |
+       |___> Every time you have an array and you want to get single value from that array like
+       |     maxElement, min, sum, searchElement, etc. `think` in reduce function.
+       |
+       |________________________________________
+      
+ 
+ ======================================== example ==================================
+ 
+// the task is: you have a array of movies and you should get this result:
+// All the movies in 2018 with rating > 4
+// Sort them be their rating
+// Descending order
+// Pick their title
+
+const movies = [
+{ title: 'a', year: 2018, rating: 4.5},
+{ title: 'b', year: 2018, rating: 4.7},
+{ title: 'c', year: 2018, rating: 3},
+    { title: 'd', year: 2017, rating: 4.5}
+];
+
+const result = movies
+.filter(m => m.year === 2018 && m.rating > 4)
+.sort((a, b) => a.rating - b.rating)
+.reverse()
+.map(m => m.title);
+
+
+console.log(result)
