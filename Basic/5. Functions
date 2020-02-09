@@ -1,0 +1,186 @@
+info-source: https://www.programingwithmosh.com
+
+Functions
+|
+|___> Functions Declaration
+|     |
+|     |___>function walk(){
+|     |     console.log('walk');
+|     |    }
+|     |___> we can call the function above declaration due to `Hoisting`
+|     
+|     
+|
+|___> Anonymous Function Expression
+|     |
+|     |___>let run = function(){
+|     |        console.log('run');
+|     |    }
+|     |___> we can not call the function above as we can not
+|           call the variable before declaration.
+|
+|___> Hoisting: is that the javascript engin move all the functions
+|     declaration into the top.
+|
+|
+|___> Arguments: every function in javascript has a spetial object called `arguments`.
+     |
+     |___> function sum(){
+     |      let total = 0;
+     |      for(let value of arguments)
+     |          total += value
+     |    }
+     |
+     |____> console.log(sum(1,2,3,4)); //output: 10
+|
+|
+|___> Rest Operator: `...args`
+     |
+     |___> Rest operator used instead of arguments, allways being in the last.
+     |
+     |___> function sum(discount, ...args){
+     |          let total = args.reduce((a, b) => a+b);
+     |          return total * (1 - discount);
+     |___________________________________
+|
+|
+|___> Default Parameter
+     |
+     |___> when you give a parameter a default value insure that all the
+     |     parameters after that has default values.
+     |
+     |____> function interest(principal, rate = 3.5, years = 5) {
+     |          return principal * rate / 100 * years;    
+     |      }
+     |____________________________________
+|
+|
+|___> Getter & Setter
+     |
+     |___> getter: access properties, setter: change (mutate) them
+     |
+     |___> const person = {
+     |      firstName: 'ahmed',
+     |      lastName: 'eid',
+     |      get fullName(){
+     |          return `${person.firstName} ${person.lastName}`
+     |      }
+     |      set fullName(value){
+     |          const parts = value.split(' ');
+     |          this.firstName = parts[0];
+     |          this.lastName = parts[1];
+     |      }
+     |     
+     |    }
+     |____________________________________
+|
+|
+|___> try & catch
+     |
+     |
+     |___> way to handel error by throw error if something wrong happen.
+     |
+     |
+     |___> const person = {
+     |          firstName: 'a',
+     |          secondName: 'b',
+     |          get fullName(){
+     |              return  `${this.firstName} ${this.secondName}`;
+     |          },
+     |          set fullName(value){
+     |              if(typeof value !== 'string')
+     |                  throw new Error('this is not vaild Type \'string\'!!');
+     |              let parts = value.split(' ');
+     |              if(parts.length !== 2)
+     |                  throw new Error('first or second name is null!!!');
+     |  
+     |              this.firstName = parts[0];
+     |              this.secondName = parts[1];
+     |          }
+     |      };
+     |   
+     |  try{
+     |       person.fullName    = 'ahmed eid'; //output: {firstName: ahmed, secondName: eid, fullName: [Getter/Setter].
+     |                      |_> = '';          //output: Error: first or second name is null!!!.  
+     |                      |_> = 'ahmed';     //output: Error: this is not vaild Type 'string'.
+     |  }catch(e){
+     |       console.log(e);
+     |  }
+     |  console.log(person);
+     |________________________________________
+|
+|
+|___> Global & Local Scope
+     |
+     |___> Global: can access the variable from anywhere in the program
+     |
+     |___> Local : can access the variable just in the scope {} where it is declared in.
+|
+|
+|___> Var vs. Let
+     |
+     |___> var : create a variable that is a function-scop not a block-scope
+     |        |
+     |        |___> functio anything(){
+     |        |     if(true){
+     |        |         var sayHello = 'Hello';
+     |        |     }
+     |        |     console.log(sayHello); //output: `Hello`.
+     |        |     }
+     |        |
+     |        |___> in global case, it's variable added to `window` object which may cause a problem while
+     |              using theared-party library contain global variable with the same name.
+     |
+     |___> let & const: create block-scoped.
+|
+|
+|___> this
+      |
+      |___> when dealing with regular function `this` by default references to global object.
+      |
+      |___> but if you call a function with `new` operator in case `constructor` function
+      |     this will reference to new empty object 
+      |
+      |___> when we deal with method `this` references to object itself.
+      |
+      |___> note that callback function is regular function so if `this` call in it will reference to `window` object.
+      |
+      |___> const video = {
+      |         title: 'a',
+      |         tags: ['a', 'b', 'c'],
+      |         showTags(){
+      |             this.tags.forEach( tag => console.log(this.title, tag) );
+      |         // first 'this' reference to video obj, but second reference to window object.
+      |         // so what is the solution if we need the second 'this' refere to the object itself?
+      |         // answer is forEach has a second argument called `thisArge`
+      |             this.tags.forEach(function(tag) { console.log(this.title, tag);}, this);
+      |         // thisArge belong to the method not to the regular function.
+      |         }
+      |     }
+      |___> but not all the functions have `thisArg` then what is the solution???
+      |     |
+      |     |___> first solution we can assign `this` to another constant and used it. like,
+      |           showTags(){
+      |             const self = this;
+      |             this.tags.forEach(function(tag){console.log( self.title, tag);}); or
+      |     |
+      |     |___> using `bind` method: 
+      |           this.tags.forEach(function(tag){console.log( this.title, tag);}.bind(this));
+      |
+      |___> but also it's not good solution!!! we can assign the object we want to `this` in regular func
+      |     by using 'call - apply` methods.
+      |     function PlayVideo(a, b){
+      |         console.log(this);
+      |     }
+      |     //.call(thisArg, ...argArray)
+      |     PlayVideo.call({name : 'ahmed'}, 1,2); or
+      |     PlayVideo.apply({name: 'ahmed'}, [1,2]}
+      |
+      |___> final solution and its prefered with callback function: `Arrow` function by default inhert
+      |     `this` from containing function :) 
+      |
+      |______________________________________
+
+ 
+ 
+ 

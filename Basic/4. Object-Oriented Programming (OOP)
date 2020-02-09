@@ -1,0 +1,196 @@
+Object-oriented Programming (OOP)
+|
+|___> object is : object in the programming language is like object in real life,  think about preson!!!
+A person has name, age, address ,and so on.
+these all are properties of person we have the same concept in programming language.
+So when we have dealing with multiple related variable, we put these related varablie in something called object!!
+|
+|___> ex: circle has a raduis, location, visibility, and also may contain a methods
+      const circle = {
+        raduis: 1,
+        location: {
+        x = 0.245,
+        y = 5
+        }.
+        isVisible = true
+        move: function() {
+            console.log('move func called');
+        }
+      }
+|
+|___> in oop if the function is part of the object then it's called a 'Method'
+|
+|___> there is some way to create an object
+      |
+      |___> Factory Function : is a way to create an object
+           |
+           |__> function createCircle(raduis){ // usually used Camel Notation
+           |        return {
+           |           raduis: raduis,
+           |           move: function() {
+           |             console.log('move func called');
+           |           }
+           |       };
+           |    }
+           |
+           |___> for simplisty 1. if the parameter has the same name of
+           |     the property we can remove the property.
+           |     2. when we implement a method we can drop the keyword function.
+           |
+           |___> function createCircle(raduis){
+           |        return {
+           |           raduis,
+           |           move() {
+           |             console.log('move func called');
+           |           }
+           |       };
+           |     }
+           |
+           |___> const cricle1 = createCircle(1);
+      |
+      |___> Constructor Function // usually use Pascale Notation
+           |
+           |___> function Circle(raduis){
+           |        this.raduis = raduis,
+           |        this.move() {
+           |            console.log('move');
+           |        }
+           |     }
+           |
+           |___> const circle1 = new Cirecle(1);
+                                |
+                                |___> new make three things
+                                      |
+                                      |__> 1. create empty object
+                                      |
+                                      |__> 2. point 'this' to the empty object
+                                      |
+                                      |__> 3. return the object
+                
+       
+|
+|___> Dynamic Natural of object
+      |
+      |___> if we have a simple object
+      |     const circle = {
+      |         reduis = 1
+      |     };
+      |___> we can add new properities
+      |     circle.location = {x:0.145, y: 2};
+      |___> add new method
+      |     circle.draw() {console.log('draw');}
+      |___> we can remove object propertities like this
+            delete circle.location;
+            
+|
+|___> every object in javascript has a property called 'constructor' and that is
+      references that function that is used to construct or create that object.
+|
+|___> equavilant way to create object by using "call" or "apply" methos
+      |
+      |___> const circle1 = new Circle(1); === Circle.call({}, 1); === Circle.apply({}, [1]);
+|
+|___> we can create object directly from the parent class 'Function'
+      const Circle = Function('reduis', `
+      this.reduis = reduis;
+      this.draw() { 
+        console.log('draw');
+      }
+      `);
+      const circle1 = new Circle(1);
+|
+|
+|___> Types in javascript
+      |
+      |___> Value Types ( Numbers - String - Boolean - Symbol - undefined - null ).
+      |
+      |___> let x = 10;
+      |     let y = x;
+      |     x = 20;
+      |     console.log(x);  //output: 20
+      |     console.log(y);  //output: 10
+      |
+      |___> Reference Types ( Object - Function - Array )
+      |
+      |___> let x = {value : 10};
+      |     let y = x;
+      |     x.value = 20;
+      |     console.log(x); //output: 20
+      |     console.log(y); //output: 20
+      |
+      |
+      |                   
+      |___> Golden Rule :- Primitive are copied by thier value.
+                           Object are copied by thier reference.
+
+|
+|___> Enumerating Properties of an object
+      |
+      |___> const circle = {
+      |     raduis: 1,
+      |     draw() {
+      |         console.log('draw');
+      |     }
+      |     };
+      |___> for(let key in circle) console.log(key, circle[key]); //output: raduis 1, draw f
+      |
+      |___> for(let key of Object.keys(circle)) console.log(key); //ouput: raduis, draw
+      |
+      |___> for(let entry of Object.entries(circle)) console.log(entry); //output: ["raduis": 1], ["draw": f]
+      |
+      |
+      |___> if ('raduis' in circle) console.log('y'); //output: y
+|
+|
+|___> Clone an Object
+      |
+      |___> const circle = {
+      |     reduis : 1,
+      |     draw(){
+      |     console.log('draw');
+      |     }
+      |     };        
+      |
+      |___> 1. const another = {};
+      |        for(let key in circle)
+      |        another[key] = circle[key];
+      |
+      |___> 2. const another = Object.assign({}, circle);
+      |
+      |___> 3. const another = {...circle};
+|
+|
+|___> in c or c++ when we create new object we allocat a memory then we need to deallocate it after finished
+      in javascript there are a 'Garbage collection' which automatically do this job.
+|
+|
+|___> To type of String 
+      |
+      |___> Premitive String: javascript engin convert automatically to
+      |     object to enable its properties like (length,
+      |     toUpperCase(), etc.)
+      |
+      |___> Object String      
+|
+|
+|___> Date Object
+      |
+      |
+      |___> const now = new Date();
+      |     const date1 = new Date("May 11 2018 09:00");
+      |     const date2 = new Date(2018, 4, 11, 9);
+      |
+      |___> each Date object have two methods
+            |
+            |___> set[/Date,/FullYear,/Hour,...] - get[/Date,...]
+            |
+            |___> now.toDateString() //output: "Fri Jan 24 2020".
+            |     now.toTimeString() //output: "07:48:33 GMT+0200 (Eastern European Standard Time)"
+            |     now.toISOString()  //output: "2020-01-24T05:48:33.826Z"
+            |_____________________
+            
+            
+            
+            
+            
+            
