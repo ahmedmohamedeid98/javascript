@@ -1,0 +1,34 @@
+Object-Oriented programming
+|
+|___> A programing `paradigm` centered around objects rather than functions.
+|___> It is not a programming language or tool. it's a style of programming or programming paradigm.
+|
+|___> four core concept in oop.
+     |
+     |___> Encapsulation
+     |    |
+     |    |___> combined a group of related variables & functions into a unit which call an `object`.
+     |    |___> we refer to the variable as a `property` and function as `method`.
+     |    |___> It's benefits: reduce complexity + increase reusability.
+     |   
+     |___> Abstraction
+     |    |
+     |    |___> hide a lot of details and complexity and show only the essentials.
+     |    |___> It's benefits: reduce complexity + isolate impact of changes.     
+     |
+     |___> Inheritance
+     |    |
+     |    |___> It's benefits: It is a machanism that allow you eliminate redundant code.
+     |
+     |___> Polymorphism
+     |    |
+     |    |___> `poly` mean 'more' and `morphism` mean 'form'.
+     |    |___> implement a method which do the same action but with different ways with each
+     |    |     different object, like switch/case.
+     |    |___> It's benefits: refactor ugly switch/case statments.  
+     |__________________________________________
+     
+     
+     
+     
+     

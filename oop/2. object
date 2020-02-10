@@ -1,0 +1,145 @@
+object
+|
+|___> two way to create an object (Factory/Constructor Function) which we mentioned before.
+|
+|___> Abstraction: hide details and show only the essential
+      |
+      |__> function circle(raduis) {
+      |         this.reduis = raduis,
+      |         this.defaultLocation = {x:1, y:1},               // details
+      |         this.computeOptimumLocation = function(factor){  // details
+      |              // ...
+      |         }
+      |         this.draw() {
+      |              this.computeOptimumLocation(0.1);
+      |              console.log('draw');
+      |         }
+      |    }
+      |__>  in the above example we can access these details so how we can hide this details??
+      |__>  we can replace `this` with let, which mean that it will not be property at more and be a local var.
+      |
+      |__> function circle(raduis) {  
+      |         this.reduis = raduis,
+      |         let defaultLocation = {x:1, y:1},               // details
+      |         let computeOptimumLocation = function(factor){  // details
+      |              // ...
+      |         }
+      |         this.draw() {
+      |              computeOptimumLocation(0.1);
+      |              console.log('draw');
+      |         }
+      |    }
+      |__> by this we can not access this variable by dot notation `circle.defaultLocation` --> not defined.
+      |___________________________________________
+
+let us Recap
+|
+|___> The simplest way to create an object is using an object literal 
+        const circle = { 
+        radius: 1, 
+        draw: function() {}
+        }; 
+|
+|___> To create multiple objects with the same structure and behaviuor (methods), use a factory or a constructor. 
+
+        // Factory function, using camal notation
+        function createCircle(radius) { 
+        return {
+            radius, 
+            draw: function() {}
+        } 
+        } 
+
+        // Constructor function, using Bascal notation 
+        function Circle(radius) { 
+            this.radius = radius; 
+            this.draw = function() {}
+        } 
+|
+|___> Every object has a "constructor" property which returns the function that was used to construct or create that object. 
+        const x = {};
+        x.constructor; // returns Object() 
+|
+|___> In JavaScript, functions are objects. They have properties and methods. 
+        Circle.name; 
+        Circle.length;
+        Circle.constructor; // returns Function()
+        Circle.call({}, 1); // to call the Circle function this equivilant to `const c1 = new Circle(1);`
+        Circle.apply({}, [1]);
+|
+|___> Value types are copied by their value, reference types are copied by their reference. 
+|
+|___> Value types in JavaScript are: String, Number, Boolean, Symbol, undefined and null
+|
+|___> Reference types are: Object, Function and Array 
+   
+|
+|___> JavaScript objects are dynamic. You can add/remove properties: 
+        circle.location = {};
+        circle['location'] = {};
+                            
+        delete circle.location; 
+|
+|___> To enumerate the members in an object: 
+        for (let key in circle) console.log(key, circle[key]);
+
+        Object.keys(circle); 
+|                          
+|___> To see if an object has a given property
+        if ('location' in circle)
+|
+|___> Abstraction means hiding the complexity/details and showing only the essentials. 
+|
+|___> We can hide the details by using private members. Replace "this" with "let". 
+
+        function Circle(radius) { 
+        // Public member 
+        this.radius = radius; 
+
+        // Private member                       
+        let defaultLocation = {};                      
+        }                       
+|
+|___> To define a getter/setter, use Object.defineProperty():
+
+        Object.defineProperty(this, 'defaultLocation', {
+            get: function() { return defaultLocation; },
+            set: function(value) { defaultLocation = value; }
+        });
+
+===================== example =================
+// task: implement stopWatch with this method(start, stop, reset) 
+// and you can get the duration
+
+function stopWatch(){
+    let startTime, endTime, running, duration = 0;
+
+    this.start = function () {
+        if(running)
+            throw new Error('stopWatch already started!!')
+        running = true;
+        startTime = new Date();
+    }
+
+    this.stop = function() {
+        if(!running)  
+            throw new Error('stopWatch not Started!!!');
+        running = false;
+        endTime = new Date();
+        const seconds = (startTime.getTime() - endTime.getTime()) / 1000;
+        duration += seconds;
+    }
+
+    this.reset = function() {
+        startTime = null;
+        endTime = null;
+        running = false;
+        duration = 0;
+    }
+
+    Object.defineProperty(this, 'duration', {
+        get: function(){
+            return duration;
+        }
+    });
+}
