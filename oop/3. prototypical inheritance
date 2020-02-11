@@ -1,0 +1,219 @@
+Prototypical inheritance
+|
+|___ how to create your own prototypical inheritance?? let us take an example
+    |___ if we create Cirecle object -> inherit from -> CircleBase -> inherit from -> ObjectBase
+    |___ also if we have Square object -> inherit from -> SquareBase -> inherit from -> ObjectBase
+    |___ and we have some methods that needed by both objects (Circle & Square) like (duplicate method)
+    |___ so, create another Shape object which inherit from -> ShapeBase -> ObjectBase
+    |___ we want to make bot (CircleBase & SquareBase) inherit from -> ShapeBase -> ObjectBase.
+    |   // create Shape object
+    |   
+    |   function Shape() { }
+    |   Shape.prototype.duplicate = funciton() {
+    |       console.log('duplicate!!');
+    |   }
+    |   // create Circle object
+    |   function Circle(reduis) {
+    |       this.reduis = reduis
+    |   }
+    |   // create Square object
+    |   function Square(line) {
+    |       this.line = line
+    |   }
+    |   Now both CircleBase & ShapeBase -> inherit from -> `ObjectBase` we need to make it inherit from `ShapeBase`
+    |   the secrit key is Object.create(take_the_object_base)
+    |   Circle.prototype = Object.create(Shape.prototype);
+    |   Square.prototype = Object.create(Shape.prototype);
+    |   Now we can access `duplicate` method from each Circle or Square object.
+    |   const c1 = new Circle(1);
+    |   c1.duplicate(); //output: "duplicate!!"
+    |   
+|
+|___ as a best practice whenever you reset a `prototype` of an object you should also reset the `constructor`.
+    | because as we know that each function have a constructor that return its implementation. 
+    | so if we want to see the implementation of the circle object  we do this.
+    |___ `new Circle.prototype.constructor()` ==> referances to `Shape()` function, but it should referances to Circle() function.
+    |___ Circle.prototype.constructor = Circle;
+    |___ Note that this expression `new Cicle.prototype.constructor(1)` is equavilient to `new Circle(1)`.
+
+|
+|___ how to call a `super constructor`.
+    | if we each shape to have a color
+    |
+    |   // in shape objects
+    |   function Shape(color) {
+    |       this.color = color
+    |   }
+    |   function Circle(reduis, color) {
+    |       // call super constructor [step 3]
+    |       Shape.call(this, color)
+    |       this.reduis = reduis
+    |   }
+    |   // reset CircleBase to ShapeBase [step 1]
+    |   Circle.prototype = Object.create(Shape.prototype);
+    |   // reset Circle Constructor from referencing to shape function to referance to circle function [step 2]
+    |   Circle.prototype.constructor = Circle;
+    |
+    |   // now let us create an object from Circle
+    |   const c1 = new Circle(1, 'red');
+    |   >> c1 //output: Circle(color: "red", reduis: 1)
+    |
+|
+|___ intermediate Function inheritance
+    |
+    |    function extend(Child, Parent) {
+    |       Child.prototype = Object.create(Parent.prototype)
+    |       Child.prototype.constructor = Child;
+    |    }
+    |    extend(Circle, Shape);
+         
+|
+|___ Method Overriding
+    |___ prototypical inheritance work as following When we access a property or a method on an object,
+    |    JavaScript engine first looks at the object itself, if it can't find that property or method,
+    |    it will look at the prototype of that object.
+    |
+    |___ to override a method implement it in the Child as its implementation in the Parent.
+    |    that is good, but if we want to call both in the same time.
+    |    // shape object
+    |    function Shape(){
+    |        // ...
+    |    }
+    |    Shape.prototype.duplicate = function() {
+    |        console.log('duplicate, Parent');
+    |    }
+    |    // circle object
+    |    function Circle(){
+    |        //...
+    |    }
+    |    // make extend
+    |    extend(Circle, Shape);
+    |    // override
+    |    Circle.prototype.duplicate = function() {
+    |        // call duplicate method from the parent as regular function and specify its context for this object.
+    |        Shape.prototype.duplicate.call(this); // [step 2]
+    |        console.log('duplicate, child'); // [step 1]
+    |    }
+    |    //output: in just step 1: "duplicate, child"
+    |    //output: in both step 1,2: "duplicate, Parent" "duplicate, child"
+    |    
+|
+|
+|___ Polymorphism
+    |___ instead of using switch/case form or if/else statment we use this technique
+    |   // example
+    |
+    |   // shape object
+    |    function Shape(){
+    |        //...
+    |    }
+    |    Shape.prototype.duplicate = function() {
+    |        console.log('duplicate, Parent');
+    |    }
+    |    // circle object
+    |    function Circle(){
+    |        //...
+    |    }
+    |    // Square object
+    |    function Square(){
+    |       //...
+    |    }
+    |    // extend circle
+    |    extend(Circle, Shape);
+    |
+    |    // extend Square
+    |    extend(Square, Shape);
+    |
+    |    // override duplicate in Circle
+    |    Circle.prototype.duplicate = function() {
+    |        console.log('duplicate, child Circle');
+    |    }
+    |
+    |    // override duplicate in Square
+    |    Square.prototype.duplicate = function() {
+    |        console.log('duplicate, child Square');
+    |    }
+    |
+    |   // create array of object
+    |   const shapes = [
+    |       new Circle(),
+    |       new Square
+    |   ];
+    |
+    |   // iterate over shapes and show duplicate
+    |   for(let shape of shapes)
+    |       shape.duplicate() //instead of if(shape.type === 'circle') //duplicateCircle
+    |
+
+|
+|
+|___ Composition
+    |___ we know how to make inheritance, but it has a problem when we go to complex inheritance like hierarchies.
+    |___ Avoid creating inheritance hierarchies because they are very fragile.
+    |___ If you want to use inheritance, keep it to one level, do not go more than one level above inheritance.
+    |___ There is a famous saying that says favor composition over inheritance.
+    |___ this composition in JavaScript is called "Mixen" for example:
+    |___ let us make a Person object with property (canEat, canWalk) and Goldfish (canEat, canSwim)
+    |    
+    |   const canEat = {
+    |       eat: function() {
+    |           console.log('eating');
+    |       }
+    |    }
+    |   const canWalk = {
+    |       walk: function() {
+    |           console.log('walking');
+    |       }
+    |   } 
+    |   const canSwim = {
+    |       swim: funciton() {
+    |           console.log('swimming');
+    |       }
+    |   }
+    |   function Person() {
+    |   }
+    |   function Goldfish() {
+    |   }
+    |   // we can mix more than one object by using assign function
+    |   Obejct.assign(target_object, ...sources_object);
+    |   
+    |   function mixen(target, ...source){ //reset operator
+    |       Object.assign(target, ...source) //speread operator
+    |   }
+    |   mixen(Person.prototype, canEat, canWalk);
+    |   mixen(Goldfish.prototype, canEat, canSwim);
+    |   const person = new Person();
+    |   console.log(person); // Person {} > canEat > canWalk
+    |__________________________________________________
+|
+|
+|___  example
+    |
+    |___ create two objects, the first(HtmlElement with `click` Instance member and `focus` prototype member)
+    |___ create another object (HtmlSelectElement with the array `items`, (`addItem`, `removeItem`) instance memebers)
+    |___ make HtmlSelectElement inherit `all` HtmlElement's members (instance & prototype)
+    |
+    |   function HtmlElement() {
+    |       this.click =function() {
+    |       console.log('click')
+    |   }
+    |   };
+    |   HtmlElement.prototype.focus = function() {
+    |   console.log('focus')
+    |   };
+    |   function HtmlSelectElement(items = []){
+    |   
+    |   this.items = items,
+    |   this.addItem = function(item) {
+    |       items.push(item);
+    |   },
+    |   this.removeItem = function(item){
+    |       this.items.splice(this.items.indexOf(item), 1);
+    |   }
+    |   };
+    |   // by this solution, create method create empty object and point HtmlElementBase to it. but missing instance member (click)
+    |   //HtmlSelectElement.prototype = Object.create(HtmlElement.prototype);
+    |   HtmlSelectElement.prototype = new HtmlElement();
+    |   HtmlSelectElement.prototype.constructor = HtmlSelectElement;
+    |
+    |    
