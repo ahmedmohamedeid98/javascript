@@ -1,0 +1,107 @@
+Inheritance
+|
+|___> two type of inheritance
+    |
+    |__> Classical
+    |   |___> multi-level inherit
+    |       |___> like creating an arr, `arr` -> inherit from -> `Array` prototype
+    |             and `Array` -> inherit from -> `Object` prototype. 
+    |
+    |__> Prototypical : When we access a property or a method on an object, JavaScript engine first looks at the 
+                        object itself, if it can't find that property or method, it will look at the prototype of that object.
+|
+|___> we call the class that inherited by other classes (Base/Super/Parent)
+|___> the relationship between parent and childeren called `IS-A`.
+|
+|___> every object that other objects inherit from is called `prototype`.
+|___> every object in javascript inherit from object called `ObjectBase`[object()] which has no prototype.
+|
+|___> let x = {name: 'x'};
+      let y = {name: 'y'};
+      x.__proto__ === y.__proto__ // true, which prove that only on baseObject in memory.|
+|
+|
+|___> Objects created by a given constructor will have the same prototype.
+|
+|
+|___> Property Descriptor : each propert in the object have a set of attributes
+      like (`writable`, `enumerable`, `configurable`) to edit it we use `Object.defineProperty()`.
+
+      let person = {name: 'Mosh'};
+      Object.defineProperty(person, 'name', {
+          writable: false,
+          enumerable: true,
+          configurable: false
+      });
+|
+|
+|___>  prototype vs. instance 
+    |___ in real world application your object meight have several methods,so if you want to have a large number of these objects in the memory
+    |    you going to wast a lot of memory by keeping copies of all these methods so what is the solution? well you know how Prototypical
+    |    inheritance works, When we access a property or a method on an object, JavaScript engine first looks at the 
+    |    object itself, if it can't find that property or method, it will look at the prototype of that object.
+    |
+    |___ for example
+    |    // Constructor function  
+    |    function Circle(reduis){
+    |       this.reduis = reduis;
+    |       this.draw = function() {
+    |           console.log('draw');
+    |       }
+    |    }
+    |    // first object
+    |    const c1 = new Circle(1);
+    |    // second object
+    |    const c2 = new Circle(1);
+    |___ will know we going to take this draw method out of the Circle object and put it in it's prototype,
+    |    we're going to have a single instance of this prototype in the memory which we call circle base,
+    |    so we're going to have a single instance of the draw method.
+    |
+    |    function Circle(reduis){
+    |        this.reduis = reduis
+    |    }
+    |    // you know that JavaScript objects are dynamic, so we can always add something to them later.
+    |    // So, we can add the draw method here.
+    |    Circle.prototype.draw = funtion() {
+    |        console.log('draw');
+    |    }
+    |    const c1 = new Circle(1);
+    |    c1.draw(); // output: draw
+    |___ we have two kinds of properties and methods in JavaScript. We have instance, properties and method.
+    |   
+    |    function Circle(reduis){
+    |       // instance members
+    |       this.reduis = reduis
+    |    }
+    |     
+    |     // prototype members
+    |     Circle.prototype.draw = function (){
+    |         console.log('draw');
+    |     }
+    |___ Now let's take this to the next level. So you know that every object has that toString method.
+    |    c1.toString() //output: [object Object] by default, it returns this string.
+    |    We can over write the implementation of this method in the prototype of our circle objects.
+    |    Circle.prototype.toString = function () {
+    |        return 'Circle with reduis' + this.reduis;
+    |    }
+    |    c1.toString() //output: "Circle with reduis 1".
+    |___ Even though we have another implementation of the toString method, on objectBase,
+    |    but this implementation will be used because this is more accessible.
+    |
+    |___ Both these kind of members, you can reference other members.
+|
+|
+|___ Iterating instance and prototype members.
+    |
+    |___ Return all instance members: Object.keys(c1) //output: ['reduis', 'move']
+    |
+    |___ Return all properties (instance + prototype) members:for(let key in c1) console.log(key)  //output: reduis, move, draw
+|
+|___ Now you know about `Prototypical inheritance` and know about adding methods to prototype,
+     but there is important role: Don't modify object you don't own.
+|
+|___ but there is an important question!!! when we should move methods to prototype???
+    |___ if you want a lot of object in memory in your application: move the method to the property
+    |___ if you want just one object you will keep it in the object like: `stopWatch` we need one object in our application.
+         
+
