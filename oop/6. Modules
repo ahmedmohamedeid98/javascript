@@ -1,0 +1,84 @@
+Modules
+|
+|___> what is module? we should split our code into multiple files, and we call each of these files a module.
+    |___ modules benefits
+        |___ increase the maintainability of our application because our code is better organized.
+        |___ reuse one or more of these modules in different parts of an application or in different applications.
+        |___ abstract code, so we can apply abstraction principle, 
+             which means we can hide some of the complexityin a module, and only expose the essentials.
+|
+|___> history
+    |___ in ES5 we didn't have the concept of modules. So different solutions emerged to solve
+         this problem. Smart developers in the community introduced new
+         syntaxes to define modules. We refer to these syntax's as
+         module formats.
+    |___ popular module formats
+        |___ AMD which stands for asynchronous module definition <used> in browser applications.
+        |___ CommonJS which is <used> in Node 
+        |___ UMD which stands for universal module definition <used> both in the browser and in Node.
+    |___  So we use this module formats in ES5, but as of ES6 JavaScript native supports a module format.
+|
+|___ CommonJS
+    |___  things that are highly related, they go together
+
+        const _reduis = new WeakMap();
+        class Circle {
+            constructor(reduis) {
+                _reduis.set(this, reduis);
+            }
+            get reduis() {
+                return _reduis.get(this);
+            }
+
+        }
+
+        const c = new Circle(10);
+        console.log(c.reduis);
+
+    |___ So things that are highly related, they go together.
+
+    ________________ in circle.js file ________________________
+
+        const _reduis = new WeakMap();
+        class Circle {
+            constructor(reduis) {
+                _reduis.set(this, reduis);
+            }
+            get reduis() {
+                return _reduis.get(this);
+            }
+
+        }
+
+        module.exports = Circle;
+    ________________ in index.js file _________________________
+
+    const Circle = require('./circle');
+
+    const c = new Circle(10);
+    console.log(c.reduis);
+|
+|___ ES6 Modules
+    |___ the same concept put that are highly related together.
+    |___ the different is instead of `module.exports = Circle;` dirctly export Circle class
+    |___ and instead of `const Circle = require(path);` use `import` keyword `import {object} from path`
+
+    ________________ in circle.js file ________________________
+
+        const _reduis = new WeakMap();
+        export class Circle {
+            constructor(reduis) {
+                _reduis.set(this, reduis);
+            }
+            get reduis() {
+                return _reduis.get(this);
+            }
+
+        }
+
+    ________________ in index.js file _________________________
+
+    import {Circle} from './circle'
+
+    const c = new Circle(10);
+    console.log(c.reduis);

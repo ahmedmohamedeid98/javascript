@@ -1,0 +1,247 @@
+Classes
+|
+|___> create object with constructor 
+    
+        function Circle(redius) {
+        // instance member
+            this.redius = redius
+        }
+        // prototype member
+        Circle.prototype.draw = function() {
+            console.log('draw')
+        }
+|
+|___> create object by new way called 'class'
+     
+        class Circle {
+            // use spetial method called constructor
+            constructor(redius) {
+                // every thing write here, add as instance members
+                this.redius = redius
+            }
+
+            // every thing write here, add as prototype member
+            this.draw = function() {
+                console.log('draw')
+            }  
+
+        }
+
+        // create object 
+        const c = new Circle(1);
+        >> c.__proto__:
+            > constructor: class Circle
+            > draw: f draw()
+            > __proto__: Object
+
+        typeof c ==> "function".
+|
+|___>  as we mentioned before 'the diff between `Function Declaration` & `Function Expression` '
+    |___ function sayHello() {}            // function declaration
+    |___ const sayGoodbye = function() {}; // function expression
+    |___ In function expression we should add this semi-colon at the end, but with function declarations we don't add the semi colon here.
+    |___ Function declarations are hoisted which means they raise to the top of the code. 
+    |___ So we can call function before its declaration in the `code`.
+    |
+    |   sayHello()
+    |   function sayHello() {
+    |       console.log('hello');
+    |   }
+    |___ but if we do the same thing for `function expression`, we get an error: `...` is not defined.
+    |     exactly as a variable we can not call it before defining it.
+    |___ Also `class` has a `Declaration & Expression` but there is no 'Hoisting' in classes.
+|
+|___> static method: its methods that belong to the class it-self not belong to the object.
+    |___ to call this method we do not need to object, call it by the class name
+        
+        class Circle{
+            constructor(redius){
+                this.redius = redius
+            }
+
+            draw() {
+                console.log('draw is prototype member');
+            }
+            // static method use as utility method
+            static parse(str) {
+                const raduis = JSON.parse(str).redius;
+                return new Circle(redius);
+            }
+        }
+
+        const c = Circle.parse('{"redius": 1}');  
+    
+    |
+    |___> we see this in `Math` class `Math.floor(1.2)` we not do `const m = new Math()` -> ` m.floor(1.2)`.
+|
+|___> strict mode: in JavaScript `strict mode` make JavaScript engin to be more sensitive, but how?
+    
+        function Circle() {
+            this.draw() {
+                console.log('draw')
+            }
+        }
+        // create object
+        const c = new Circle();
+        // this is called `Method call`
+        c.draw() //output: draw
+        // make a reference to the draw method
+        const draw = c.draw;
+        // this is called `Function call`
+        draw(); // here return draw in global object `Window`
+    
+        in Function call by default `this` refer to `Window` Object
+        in Metod call `this` refer to the object it-self
+
+        but if we add 'use strict'; in the above, draw() will return `undefined`, by this way we protect `Window` object from wrong editing.
+|   
+|___> the class's body be default executed in 'strict mode'.
+
+|
+|___> Private property using `WeakMaps`
+      we need to make redius & move method Private
+
+      const _reduis = new WeakMap();
+      const _move = new WeakMap(); // WeakMap is a dictionary its key is the property and value can be anything
+
+      class Circle{
+          constructor(redius){
+            _reduis.set(this, redius);
+            _move.set(this, () => {
+                console.log('move', this); // if we not use arrow function `this` will be undefined because we in `strict mode`.
+            })
+          draw: () =>  {
+            console.log(_move.get(this)()); // note adding () at the end because the expression return a function
+            console.log(_reduis.get(this));
+          }
+          }
+      }
+|
+|___> Getter & Setter
+     
+        const _reduis = new WeakMap();
+        class Circle{
+            constructor(redius){
+                _reduis.get(this, redius);
+            }
+
+            // define getter for redius
+            // this is look like a function but, we call it as property
+            get redius() { 
+                return _reduis.get(this);
+            }
+
+            // define setter for redius
+            set redius(value) {
+                return _reduis.set(this, value);
+            }
+        }
+
+        const c = new Circle(1);
+        // set
+        c.redius = 10;
+        // get
+        console.log(c.redius); //output: 10
+|
+|___> inheritance in class
+    |
+    |   class Shape{
+    |       move() {
+    |           console.log('move');
+    |       }
+    |   }
+    |   class Circle extends Shape {
+    |       draw() {
+    |           console.log('draw');
+    |       }
+    |   }
+    |   const c = new Circle();
+    |   // we can access to the move method as same as we can access draw method
+    |__> but if we add a constructor in the circle class, must call `super` constructor in direct class before accessing this
+    |   or returning from derived constructor.
+    |   what's happening here. If you have a constructor in the parent class, and then you add a constructor in the direct class,
+    |   inside of this constructor you should make sure to call this constructor first, to initialize this base object.
+    |   class Shape{
+    |       constructor(color){
+    |           this.color = color
+    |       }
+    |       move() {
+    |           console.log('move');
+    |       }
+    |   }
+    |   class Circle extends Shape {
+    |       constructor(color, redius){
+    |           super(color);
+    |           this.redius = redius;
+    |       }
+    |       draw() {
+    |           console.log('draw');
+    |       }
+    |   }
+    |   const c = new Circle('red', 5);
+    |   c.color // output: "red"
+    |__> not as prototypical inheritance we can see with the extends keyword we don't have to reset the constructor.
+
+|
+|___> method overriding
+    |___ as in the prototypical inheritance JavaScript engin return the most accessible method.
+
+        class Shape {
+            move() {
+                console.log('move');
+            }
+
+        }
+
+        class Circle extends Shape {
+            move() {
+                console.log('move circle');
+            }
+        }
+
+        const c = new Circle();
+        c.move() //output: move circle
+|
+|___> example
+        implement stack calss with this option
+        push: add new item
+        pop: return and remove top item
+        peak: return top item without remove it.
+        count: property return the count of items
+
+        // make arr private to prevent access to its method
+        const _arr = new WeakMap();
+
+        class Stack {
+            constructor() {
+                _arr.set(this, []);
+            }
+
+            push(item) {
+                _arr.get(this).push(item);
+            }
+
+            pop() {
+                if(_arr.get(this).length === 0)
+                    throw new Error('Stack is empty')
+
+                return _arr.get(this).pop();
+            }
+
+            peak() {
+                const items = _arr.get(this);
+
+                if(items.length === 0)
+                    throw new Error('Stack is empty');
+                return items[items.length - 1];
+            }
+
+            get count() {
+                return _arr.get(this).length;
+            }
+        }
+
+        const stack = new Stack();
+        stack.push(1);
+        stack.push(2);
+        console.log(stack.peak()); // 2
